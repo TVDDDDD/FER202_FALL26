@@ -1,15 +1,15 @@
 import "./App.css";
-import Person from "./Person";
+import Student from "./Student";
 
 function App() {
-  const person = new Person("John Doe", 20);
+  const student = new Student("John Doe", 20, [8, 9, 10]);
 
   return (
     <div className="App">
       <main className="person-card">
         <p className="eyebrow">ES6 Student Management</p>
-        <h1>Person Information</h1>
-        <p>{person.introduce()}</p>
+        <h1>Student Information</h1>
+        <p>{student.displayFullInfo()}</p>
       </main>
     </div>
   );
