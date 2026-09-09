@@ -4,7 +4,9 @@ import { createScores } from "./scores";
 
 function App() {
   const scores = createScores(8, 9, 10);
-  const student = new Student("John Doe", 20, scores);
+  const newScores = [7, 10];
+  const mergedScores = [...scores, ...newScores];
+  const student = new Student("John Doe", 20, mergedScores);
   const { name, age } = student;
 
   return (
