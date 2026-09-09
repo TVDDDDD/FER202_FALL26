@@ -1,8 +1,12 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
-test('renders learn react link', () => {
+test("renders the person introduction", () => {
   render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+  expect(
+    screen.getByRole("heading", { name: /person information/i }),
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(/hello, my name is john doe and i am 20 years old/i),
+  ).toBeInTheDocument();
 });
