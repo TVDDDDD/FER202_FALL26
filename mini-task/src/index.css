@@ -1,0 +1,16 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: Consolas, 'Courier New', monospace;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
