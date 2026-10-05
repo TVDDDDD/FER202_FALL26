@@ -1,27 +1,40 @@
-function MovieItem({ movie, isSelected, onSelect, onToggleFavorite }) {
+function MovieItem({ movie, onToggleFavorite }) {
   return (
-    <li className={isSelected ? "movie-item selected" : "movie-item"}>
-      <button type="button" className="movie-card" onClick={() => onSelect(movie.id)}>
-        <div className="movie-card-header">
-          <span className="movie-card-title">{movie.title}</span>
-          <span className="movie-rating">★ {movie.rating}</span>
-        </div>
-        <div className="movie-card-meta">
-          <span>{movie.genre}</span>
-          <span>{movie.year}</span>
-        </div>
-      </button>
+    <li className="movie-item">
       <button
         type="button"
-        className={movie.favorite ? "favorite-toggle active" : "favorite-toggle"}
+        className={movie.favorite ? "star-btn active" : "star-btn"}
         aria-label={movie.favorite ? `Bỏ yêu thích ${movie.title}` : `Yêu thích ${movie.title}`}
-        onClick={(event) => {
-          event.stopPropagation();
-          onToggleFavorite(movie.id);
-        }}
+        onClick={() => onToggleFavorite(movie.id)}
       >
-        {movie.favorite ? "♥" : "♡"}
+        ★
       </button>
+
+      <div className="movie-card">
+        <div className="movie-card-header">
+          <h3 className="movie-card-title">{movie.title}</h3>
+          <span className="movie-rating">⭐ {movie.rating}</span>
+        </div>
+
+        <div className="movie-card-meta">
+          <span>Thể loại: {movie.genre}</span>
+          <span>Năm: {movie.year}</span>
+        </div>
+
+        <div className="movie-card-actions">
+          <button
+            type="button"
+            className={movie.favorite ? "favorite-toggle active" : "favorite-toggle"}
+            onClick={() => onToggleFavorite(movie.id)}
+          >
+            {movie.favorite ? "Bỏ thích" : "Yêu thích"}
+          </button>
+
+          <button type="button" className="detail-button">
+            Chi tiết phim
+          </button>
+        </div>
+      </div>
     </li>
   );
 }

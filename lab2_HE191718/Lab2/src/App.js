@@ -1,8 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import "./App.css";
 import Header from "./components/Header";
-import GenreFilter from "./components/GenreFilter";
-import MovieDetail from "./components/MovieDetail";
 import MovieList from "./components/MovieList";
 import SearchBar from "./components/SearchBar";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -17,7 +15,6 @@ function App() {
   const [query, setQuery] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("all");
   const [sortBy, setSortBy] = useState("rating-desc");
-  const [selectedMovieId, setSelectedMovieId] = useState(initialMovies[0]?.id ?? null);
 
   const genres = useMemo(
     () => ["all", ...new Set(movies.map((movie) => movie.genre))],
@@ -51,26 +48,6 @@ function App() {
       });
   }, [movies, query, selectedGenre, sortBy]);
 
-  useEffect(() => {
-    if (!filteredMovies.length) {
-      setSelectedMovieId(null);
-      return;
-    }
-
-    const isCurrentSelectedInList = filteredMovies.some(
-      (movie) => movie.id === selectedMovieId,
-    );
-
-    if (!isCurrentSelectedInList) {
-      setSelectedMovieId(filteredMovies[0].id);
-    }
-  }, [filteredMovies, selectedMovieId]);
-
-  const selectedMovie =
-    filteredMovies.find((movie) => movie.id === selectedMovieId) ??
-    filteredMovies[0] ??
-    null;
-
   const favoriteCount = movies.filter((movie) => movie.favorite).length;
 
   const toggleFavorite = (movieId) => {
@@ -88,10 +65,28 @@ function App() {
           <Header />
 
           <div className="panel-content">
-            <div className="toolbar-row">
+            <div className="search-wrap">
               <SearchBar value={query} onChange={setQuery} />
-              <label className="sort-wrap" htmlFor="movie-sort">
-                <span className="sr-only">Sắp xếp phim</span>
+            </div>
+
+            <div className="filter-grid">
+              <label className="select-field" htmlFor="movie-genre">
+                <span className="field-label">Filter by genre</span>
+                <select
+                  id="movie-genre"
+                  value={selectedGenre}
+                  onChange={(event) => setSelectedGenre(event.target.value)}
+                >
+                  {genres.map((genre) => (
+                    <option key={genre} value={genre}>
+                      {genre === "all" ? "Tất cả thể loại" : genre}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label className="select-field" htmlFor="movie-sort">
+                <span className="field-label">Sort by</span>
                 <select
                   id="movie-sort"
                   value={sortBy}
@@ -106,37 +101,16 @@ function App() {
               </label>
             </div>
 
-            <GenreFilter
-              genres={genres}
-              selectedGenre={selectedGenre}
-              onSelect={setSelectedGenre}
-            />
-
             <div className="summary-row" aria-live="polite">
-              <span>
-                Tổng phim <strong>{movies.length}</strong>
-              </span>
-              <span>
-                Yêu thích <strong>{favoriteCount}</strong>
-              </span>
-              <span>
-                Hiển thị <strong>{filteredMovies.length}</strong>
-                
-              </span>
+              <span>Tổng số phim: <strong>{movies.length}</strong></span>
+              <span>Yêu thích: <strong>{favoriteCount}</strong></span>
+              <span>Đang hiển thị: <strong>{filteredMovies.length}</strong></span>
             </div>
 
-            <div className="movie-layout">
-              <MovieList
-                movies={filteredMovies}i
-                selectedMovieId={selectedMovieId}
-                onSelect={setSelectedMovieId}
-                onToggleFavorite={toggleFavorite}
-              />
-              <MovieDetail
-                movie={selectedMovie}
-                onToggleFavorite={toggleFavorite}
-              />
-            </div>
+            <MovieList
+              movies={filteredMovies}
+              onToggleFavorite={toggleFavorite}
+            />
           </div>
         </section>
       </main>
